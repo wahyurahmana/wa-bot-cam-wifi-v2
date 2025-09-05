@@ -7,6 +7,7 @@ exports.up = function(knex) {
     table.increments('voucher_id').primary();
     table.string('id_login');
     table.string('password');
+    table.boolean('available').defaultTo(true);
   });
 };
 
