@@ -62,7 +62,7 @@ client.on('message', async (msg) => {
               await trx('vouchers').where({voucher_id : availableVoucher[0].voucher_id}).update({available : false});
               await trx('employee').insert(insert);
               const wifi = await trx('vouchers').where({voucher_id : availableVoucher[0].voucher_id});
-              msg.reply(`username ${wifi[0].id_login} password ${wifi[0].password}`)
+              msg.reply(`username ${wifi[0].id_login} password ${wifi[0].password}\nAkun Berlaku 5jam/hari dengan sinyal WiFi 'Camp WiFi'`);
               console.log('sukses daftar');
             }
           }
