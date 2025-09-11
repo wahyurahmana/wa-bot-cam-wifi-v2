@@ -49,18 +49,22 @@ client.on('message', async (msg) => {
             }
           })
           const availableVoucher = await trx('vouchers').where({available : true});
-          insert['voucher_id'] = availableVoucher[0].voucher_id;
-          insert['mobile_phone'] = mobilePhoneHash;
-          insert['timestamp'] = msg.timestamp;
-          if(!insert['badge'] || isNaN(insert['badge'])){
-            msg.reply('badge:\nfullname:\ndepartment:\ncompany:\ncamp:\n');
-          }else{
-            insert['badge'] = createHmac('sha256', process.env.HASH_KEY).update(insert['badge']).digest('hex');
-            await trx('vouchers').where({voucher_id : availableVoucher[0].voucher_id}).update({available : false});
-            await trx('employee').insert(insert);
-            const wifi = await trx('vouchers').where({voucher_id : availableVoucher[0].voucher_id});
-            msg.reply(`username ${wifi[0].id_login} password ${wifi[0].password}`)
-            console.log('sukses daftar');
+          if (availableVoucher.length <= 0) {
+            msg.reply('Maaf Voucher Lagi Habis, Kami Akan Generate Dulu Ya Kak, Kami Akan Balas Secepatnya. Terima Kasih Kak')
+          } else {
+            insert['voucher_id'] = availableVoucher[0].voucher_id;
+            insert['mobile_phone'] = mobilePhoneHash;
+            insert['timestamp'] = msg.timestamp;
+            if(!insert['badge'] || isNaN(insert['badge'])){
+              msg.reply('badge:\nfullname:\ndepartment:\ncompany:\ncamp:\n');
+            }else{
+              insert['badge'] = createHmac('sha256', process.env.HASH_KEY).update(insert['badge']).digest('hex');
+              await trx('vouchers').where({voucher_id : availableVoucher[0].voucher_id}).update({available : false});
+              await trx('employee').insert(insert);
+              const wifi = await trx('vouchers').where({voucher_id : availableVoucher[0].voucher_id});
+              msg.reply(`username ${wifi[0].id_login} password ${wifi[0].password}`)
+              console.log('sukses daftar');
+            }
           }
         }else{
           const ready = await trx('vouchers').where({voucher_id : employee[0].voucher_id});
