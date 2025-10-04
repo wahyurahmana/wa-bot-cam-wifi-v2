@@ -62,15 +62,15 @@ client.on('message', async (msg) => {
               await trx('vouchers').where({voucher_id : availableVoucher[0].voucher_id}).update({available : false});
               await trx('employee').insert(insert);
               const wifi = await trx('vouchers').where({voucher_id : availableVoucher[0].voucher_id});
-              msg.reply(`username ${wifi[0].id_login} password ${wifi[0].password}\nAkun Berlaku 5jam/hari dengan sinyal WiFi 'Camp WiFi'`);
+              msg.reply(`username ${wifi[0].id_login} password ${wifi[0].password}\nAkun Berlaku 5jam/hari dengan sinyal WiFi 'Camp WiFi', Jika melebihi batas waktu yang telah ditentukan maka akan muncul pesan pada saat login 'no valid profile found'.`);
               console.log('sukses daftar');
+              await trx.commit();
             }
           }
         }else{
           const ready = await trx('vouchers').where({voucher_id : employee[0].voucher_id});
           msg.reply(`Anda Telah Terdaftar Dengan Username ${ready[0].id_login} Dan Password ${ready[0].password}`);
         }
-        await trx.commit();
       } catch (error) {
         console.log(error, '<<< Error Didalam Transaction');
         await trx.rollback();
