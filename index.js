@@ -69,7 +69,7 @@ client.on('message', async (msg) => {
           }
         }else{
           const ready = await trx('vouchers').where({voucher_id : employee[0].voucher_id});
-          msg.reply(`Anda Telah Terdaftar Dengan Username ${ready[0].id_login} Dan Password ${ready[0].password}`);
+          msg.reply(`Anda Telah Terdaftar Dengan Username ${ready[0].id_login} Dan Password ${ready[0].password}\nAkun Berlaku 5jam/hari dengan sinyal WiFi 'Camp WiFi', Jika melebihi batas waktu yang telah ditentukan maka akan muncul pesan pada saat login 'no valid profile found'.`);
         }
       } catch (error) {
         console.log(error, '<<< Error Didalam Transaction');
