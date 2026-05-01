@@ -1,5 +1,7 @@
 // Update with your config settings.
-require('@dotenvx/dotenvx').config()
+if (!process.env.DATABASE_NAME || !process.env.DATABASE_USER || !process.env.DATABASE_PASSWORD) {
+  require('@dotenvx/dotenvx').config()
+}
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
